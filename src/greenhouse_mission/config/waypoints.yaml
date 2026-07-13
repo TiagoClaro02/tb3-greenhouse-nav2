@@ -1,42 +1,22 @@
 max_path_length_m: 7.083
 rows:
 - id: 1
-  waypoints:
-  - x: 0.3
-    y: 0.5
-    yaw: 0.0
-  - x: 5.7
-    y: 0.5
-    yaw: 0.0
+  y: 0.5
+  west_x: 0.3
+  east_x: 5.7
 - id: 2
-  waypoints:
-  - x: 5.7
-    y: 1.9
-    yaw: 3.14159
-  - x: 0.3
-    y: 1.9
-    yaw: 3.14159
+  y: 1.9
+  west_x: 0.3
+  east_x: 5.7
 - id: 3
-  waypoints:
-  - x: 0.3
-    y: 3.3
-    yaw: 0.0
-  - x: 5.7
-    y: 3.3
-    yaw: 0.0
+  y: 3.3
+  west_x: 0.3
+  east_x: 5.7
 - id: 4
-  waypoints:
-  - x: 5.7
-    y: 4.7
-    yaw: 3.14159
-  - x: 0.3
-    y: 4.7
-    yaw: 3.14159
+  y: 4.7
+  west_x: 0.3
+  east_x: 5.7
 - id: 5
-  waypoints:
-  - x: 0.3
-    y: 6.1
-    yaw: 0.0
-  - x: 5.7
-    y: 6.1
-    yaw: 0.0
+  y: 6.1
+  west_x: 0.3
+  east_x: 5.7

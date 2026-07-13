@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import math
 import os
 import time
@@ -87,20 +89,49 @@ def drive_to(navigator, status_pub, row_id, total_rows, label, pose,
     return navigator.getResult()
 
 
-def run_row(navigator, status_pub, row, total_rows, max_path_length_m, monitor):
+def run_row(navigator, status_pub, row, total_rows, max_path_length_m, monitor, current_side):
     row_id = row['id']
-    entry_pose = make_pose(navigator, row['waypoints'][0]['x'], row['waypoints'][0]['y'], row['waypoints'][0]['yaw'])
-    exit_pose = make_pose(navigator, row['waypoints'][1]['x'], row['waypoints'][1]['y'], row['waypoints'][1]['yaw'])
+
+    entry_side = current_side
+    exit_side = 'east' if entry_side == 'west' else 'west'
+    entry_x = row['west_x'] if entry_side == 'west' else row['east_x']
+    exit_x = row['east_x'] if entry_side == 'west' else row['west_x']
+    yaw = 0.0 if entry_side == 'west' else math.pi
+
+    entry_pose = make_pose(navigator, entry_x, row['y'], yaw)
+    exit_pose = make_pose(navigator, exit_x, row['y'], yaw)
+
+    navigator.get_logger().info(f'Row {row_id}/{total_rows}: entering from {entry_side}')
 
     result = drive_to(navigator, status_pub, row_id, total_rows, 'entry', entry_pose)
     if result != TaskResult.SUCCEEDED:
         navigator.get_logger().warn(f'Row {row_id}/{total_rows}: could not reach entry ({result.name})')
-        return result
+        # Couldn't even reach the entry -- assume still on the entry side,
+        # since we never got far enough to be anywhere else.
+        return result, entry_side
 
-    return drive_to(
+    # The exit leg is where the row is actually traversed -- monitor every
+    # replan for the whole duration, since the obstacle is only discovered
+    # once the robot is close enough to sense it, not before departure.
+    result = drive_to(
         navigator, status_pub, row_id, total_rows, 'exit', exit_pose,
         monitor=monitor, max_path_length_m=max_path_length_m,
     )
+
+    if result == TaskResult.SUCCEEDED:
+        # Made it across -- robot is now genuinely on the far side.
+        return result, exit_side
+    else:
+        # Aborted partway (or blocked) -- robot never crossed, so it's
+        # still on the side it entered from. The NEXT row must be entered
+        # from here too, rather than blindly continuing the alternating
+        # pattern, which would force an unnecessary crossing back to a
+        # side the robot never actually reached.
+        navigator.get_logger().warn(
+            f'Row {row_id}/{total_rows}: did not complete crossing, '
+            f'staying on {entry_side} side for the next row'
+        )
+        return result, entry_side
 
 
 def main():
@@ -117,10 +148,17 @@ def main():
     navigator.get_logger().info(f'Max allowed path length per row: {max_path_length_m:.2f}m')
     completed, skipped = [], []
 
+    # Must match the launch file's spawn x_pose/y_pose side (currently the
+    # west headland, x_pose=-1.0) -- another manually-synced coupling, same
+    # as the AMCL initial_pose <-> launch spawn pose pair.
+    current_side = 'west'
+
     for row in rows:
         row_id = row['id']
         try:
-            result = run_row(navigator, status_pub, row, total_rows, max_path_length_m, monitor)
+            result, current_side = run_row(
+                navigator, status_pub, row, total_rows, max_path_length_m, monitor, current_side
+            )
         except Exception as exc:  # noqa: BLE001 -- mission must survive any single row's failure
             navigator.get_logger().error(f'Row {row_id} raised an exception: {exc}')
             status_pub.publish(String(data=f'row {row_id}/{total_rows}: EXCEPTION, skipping'))
