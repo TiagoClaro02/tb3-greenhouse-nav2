@@ -29,7 +29,7 @@ amcl:
     save_pose_rate: 0.5
     set_initial_pose: true
     initial_pose:
-      x: -0.25
+      x: -0.75
       y: 0.5
       z: 0.0
       yaw: 0.0
@@ -125,7 +125,7 @@ controller_server:
       gamma: 0.015
       motion_model: "DiffDrive"
       visualize: true
-      regenerate_noises: true
+      regenerate_noises: false
       TrajectoryVisualizer:
         trajectory_step: 5
         time_step: 3

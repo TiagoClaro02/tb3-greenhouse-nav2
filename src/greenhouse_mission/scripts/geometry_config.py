@@ -21,7 +21,7 @@ NUM_CORRIDORS = 3          # number of parallel 1m-wide driving corridors
 ROW_WIDTH = 1.0            # meters, width of each corridor
 DIVIDER_THICKNESS = 0.2    # meters, thickness of each interior divider wall
 ROW_LENGTH = 6.0           # meters, length of each corridor (the "long" direction, x-axis)
-HEADLAND = 0.8             # meters, open turning space at each end (x-axis)
+HEADLAND = 1.5             # meters, open turning space at each end (x-axis)
 BOUNDARY_THICKNESS = 0.2   # meters, thickness of the outer boundary walls
 WALL_HEIGHT = 0.6          # meters
 
@@ -85,8 +85,20 @@ BLOCKAGE_LENGTH_ALONG_ROW = 0.3
 # more than ROBOT_DIAMETER, so the robot should navigate around it within
 # the row rather than trigger the max_path_length_m abort.
 PARTIAL_OBSTACLE_CORRIDOR_INDEX = 0
-PARTIAL_OBSTACLE_WIDTH_ACROSS_ROW = 0.35
+PARTIAL_OBSTACLE_WIDTH_ACROSS_ROW = 0.40  # was 0.35 -- tightened one deliberate step, leaves ~0.55m clear (0.11m slack beyond ROBOT_DIAMETER)
 PARTIAL_OBSTACLE_LENGTH_ALONG_ROW = 0.3
 PARTIAL_OBSTACLE_X_CENTER = FIELD_X_MIN + ROW_LENGTH * 0.4  # off-center, different position than the full blockage
 _partial_row_bounds = CORRIDOR_BOUNDS[PARTIAL_OBSTACLE_CORRIDOR_INDEX]
 PARTIAL_OBSTACLE_Y_CENTER = _partial_row_bounds[0] + PARTIAL_OBSTACLE_WIDTH_ACROSS_ROW / 2.0 + 0.05
+
+# Entry blockage: placed right at the row entry (near the headland/corridor
+# threshold) of the LAST row, rather than mid-row. Tests whether "stuck at
+# row entry" is actually a blockage the mission node should detect and
+# skip, versus a tuning problem with the entry transition itself (open
+# headland -> suddenly-narrow corridor) when nothing is actually in the way.
+ENTRY_BLOCKAGE_CORRIDOR_INDEX = NUM_CORRIDORS - 1
+_entry_row_bounds = CORRIDOR_BOUNDS[ENTRY_BLOCKAGE_CORRIDOR_INDEX]
+ENTRY_BLOCKAGE_Y_CENTER = sum(_entry_row_bounds) / 2.0
+ENTRY_BLOCKAGE_WIDTH_ACROSS_ROW = ROW_WIDTH - 0.1  # full block, same margin as the main blockage
+ENTRY_BLOCKAGE_LENGTH_ALONG_ROW = 0.3
+ENTRY_BLOCKAGE_X_CENTER = FIELD_X_MIN + 0.5  # just inside the row entrance, not mid-row

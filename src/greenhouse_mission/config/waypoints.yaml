@@ -1,5 +1,5 @@
 max_path_length_m: 7.083
-spawn_x: -0.4
+spawn_x: -0.75
 spawn_y: 0.5
 rows:
 - id: 1
