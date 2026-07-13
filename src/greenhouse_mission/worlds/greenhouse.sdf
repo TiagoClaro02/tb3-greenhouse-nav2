@@ -25,13 +25,13 @@
 
     <model name="ground_plane">
       <static>true</static>
-      <pose>3.0 3.3000000000000003 0 0 0 0</pose>
+      <pose>3.0 1.7000000000000002 0 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry><plane><normal>0 0 1</normal><size>15.0 12.600000000000001</size></plane></geometry>
+          <geometry><plane><normal>0 0 1</normal><size>13.6 9.4</size></plane></geometry>
         </collision>
         <visual name="visual">
-          <geometry><plane><normal>0 0 1</normal><size>15.0 12.600000000000001</size></plane></geometry>
+          <geometry><plane><normal>0 0 1</normal><size>13.6 9.4</size></plane></geometry>
           <material><ambient>0.4 0.35 0.2 1</ambient><diffuse>0.5 0.45 0.3 1</diffuse></material>
         </visual>
       </link>
@@ -39,18 +39,18 @@
 
     <!--
       Generated from geometry_config.py - do not hand-edit corridor
-      positions here. NUM_CORRIDORS=5, ROW_WIDTH=1.0m.
+      positions here. NUM_CORRIDORS=3, ROW_WIDTH=1.0m.
     -->
 
     <model name="divider_wall_1">
       <static>true</static>
-      <pose>3.0 1.2 0.3 0 0 0</pose>
+      <pose>3.0 1.1 0.3 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry><box><size>6.0 0.4 0.6</size></box></geometry>
+          <geometry><box><size>6.0 0.2 0.6</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry><box><size>6.0 0.4 0.6</size></box></geometry>
+          <geometry><box><size>6.0 0.2 0.6</size></box></geometry>
           <material><ambient>0.1 0.5 0.1 1</ambient><diffuse>0.2 0.6 0.2 1</diffuse></material>
         </visual>
       </link>
@@ -58,41 +58,13 @@
 
     <model name="divider_wall_2">
       <static>true</static>
-      <pose>3.0 2.6 0.3 0 0 0</pose>
+      <pose>3.0 2.3000000000000003 0.3 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry><box><size>6.0 0.4 0.6</size></box></geometry>
+          <geometry><box><size>6.0 0.2 0.6</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry><box><size>6.0 0.4 0.6</size></box></geometry>
-          <material><ambient>0.1 0.5 0.1 1</ambient><diffuse>0.2 0.6 0.2 1</diffuse></material>
-        </visual>
-      </link>
-    </model>
-
-    <model name="divider_wall_3">
-      <static>true</static>
-      <pose>3.0 4.0 0.3 0 0 0</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry><box><size>6.0 0.4 0.6</size></box></geometry>
-        </collision>
-        <visual name="visual">
-          <geometry><box><size>6.0 0.4 0.6</size></box></geometry>
-          <material><ambient>0.1 0.5 0.1 1</ambient><diffuse>0.2 0.6 0.2 1</diffuse></material>
-        </visual>
-      </link>
-    </model>
-
-    <model name="divider_wall_4">
-      <static>true</static>
-      <pose>3.0 5.4 0.3 0 0 0</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry><box><size>6.0 0.4 0.6</size></box></geometry>
-        </collision>
-        <visual name="visual">
-          <geometry><box><size>6.0 0.4 0.6</size></box></geometry>
+          <geometry><box><size>6.0 0.2 0.6</size></box></geometry>
           <material><ambient>0.1 0.5 0.1 1</ambient><diffuse>0.2 0.6 0.2 1</diffuse></material>
         </visual>
       </link>
@@ -103,10 +75,10 @@
       <pose>3.0 -0.1 0.3 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry><box><size>9.0 0.2 0.6</size></box></geometry>
+          <geometry><box><size>7.6 0.2 0.6</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry><box><size>9.0 0.2 0.6</size></box></geometry>
+          <geometry><box><size>7.6 0.2 0.6</size></box></geometry>
           <material><ambient>0.5 0.5 0.5 1</ambient><diffuse>0.6 0.6 0.6 1</diffuse></material>
         </visual>
       </link>
@@ -114,13 +86,13 @@
 
     <model name="boundary_north">
       <static>true</static>
-      <pose>3.0 6.7 0.3 0 0 0</pose>
+      <pose>3.0 3.5000000000000004 0.3 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry><box><size>9.0 0.2 0.6</size></box></geometry>
+          <geometry><box><size>7.6 0.2 0.6</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry><box><size>9.0 0.2 0.6</size></box></geometry>
+          <geometry><box><size>7.6 0.2 0.6</size></box></geometry>
           <material><ambient>0.5 0.5 0.5 1</ambient><diffuse>0.6 0.6 0.6 1</diffuse></material>
         </visual>
       </link>
@@ -128,13 +100,13 @@
 
     <model name="boundary_west">
       <static>true</static>
-      <pose>-1.5 3.3000000000000003 0.3 0 0 0</pose>
+      <pose>-0.8 1.7000000000000002 0.3 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry><box><size>0.2 6.6000000000000005 0.6</size></box></geometry>
+          <geometry><box><size>0.2 3.4000000000000004 0.6</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry><box><size>0.2 6.6000000000000005 0.6</size></box></geometry>
+          <geometry><box><size>0.2 3.4000000000000004 0.6</size></box></geometry>
           <material><ambient>0.5 0.5 0.5 1</ambient><diffuse>0.6 0.6 0.6 1</diffuse></material>
         </visual>
       </link>
@@ -142,13 +114,13 @@
 
     <model name="boundary_east">
       <static>true</static>
-      <pose>7.5 3.3000000000000003 0.3 0 0 0</pose>
+      <pose>6.8 1.7000000000000002 0.3 0 0 0</pose>
       <link name="link">
         <collision name="collision">
-          <geometry><box><size>0.2 6.6000000000000005 0.6</size></box></geometry>
+          <geometry><box><size>0.2 3.4000000000000004 0.6</size></box></geometry>
         </collision>
         <visual name="visual">
-          <geometry><box><size>0.2 6.6000000000000005 0.6</size></box></geometry>
+          <geometry><box><size>0.2 3.4000000000000004 0.6</size></box></geometry>
           <material><ambient>0.5 0.5 0.5 1</ambient><diffuse>0.6 0.6 0.6 1</diffuse></material>
         </visual>
       </link>
@@ -156,11 +128,22 @@
 
     <model name="row_blockage">
       <static>true</static>
-      <pose>3.0 3.3 0.25 0 0 0</pose>
+      <pose>3.0 1.7000000000000002 0.25 0 0 0</pose>
       <link name="link">
-        <collision name="collision"><geometry><box><size>0.3 0.8 0.5</size></box></geometry></collision>
-        <visual name="visual"><geometry><box><size>0.3 0.8 0.5</size></box></geometry>
+        <collision name="collision"><geometry><box><size>0.3 0.9 0.5</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.3 0.9 0.5</size></box></geometry>
           <material><ambient>0.8 0.1 0.1 1</ambient><diffuse>0.9 0.15 0.15 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="partial_obstacle">
+      <static>true</static>
+      <pose>2.4000000000000004 0.22499999999999998 0.2 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>0.3 0.35 0.4</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>0.3 0.35 0.4</size></box></geometry>
+          <material><ambient>0.85 0.55 0.1 1</ambient><diffuse>0.95 0.65 0.15 1</diffuse></material>
         </visual>
       </link>
     </model>

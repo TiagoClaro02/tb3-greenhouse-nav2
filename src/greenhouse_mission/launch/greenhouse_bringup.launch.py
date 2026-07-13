@@ -1,7 +1,27 @@
 #!/usr/bin/env python3
+"""
+Brings up the whole greenhouse mission stack in one launch file:
+  - Gazebo Harmonic server + client, loading worlds/greenhouse.sdf
+  - TurtleBot3 (waffle) spawned via turtlebot3_gazebo's real spawn/bridge launch files
+  - robot_state_publisher
+  - Nav2 bringup, using our static map + nav2_params.yaml
 
+Requires TURTLEBOT3_MODEL to be set in the environment (waffle recommended --
+waffle has the sensor suite this task needs; burger does not get a camera bridge).
+
+Spawn pose is read from config/waypoints.yaml's spawn_x/spawn_y (generated
+by scripts/generate_waypoints.py from geometry_config.py) rather than
+hardcoded here. This was a real bug: a literal x_pose=-1.0 broke the
+moment HEADLAND was changed, since the west boundary wall moved but the
+spawn point didn't -- the robot spawned outside the world. Reading it
+from the same generated file the mission node already uses keeps spawn
+position, AMCL's expectations, and the actual world geometry in sync
+automatically whenever geometry_config.py changes and the generators are
+re-run.
+"""
 import os
 
+import yaml
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import AppendEnvironmentVariable, DeclareLaunchArgument, IncludeLaunchDescription
@@ -18,6 +38,12 @@ def generate_launch_description():
     world_path = os.path.join(pkg_greenhouse, 'worlds', 'greenhouse.sdf')
     map_yaml_path = os.path.join(pkg_greenhouse, 'maps', 'greenhouse_map.yaml')
     nav2_params_path = os.path.join(pkg_greenhouse, 'config', 'nav2_params.yaml')
+    waypoints_path = os.path.join(pkg_greenhouse, 'config', 'waypoints.yaml')
+
+    with open(waypoints_path) as f:
+        waypoints_data = yaml.safe_load(f)
+    default_spawn_x = str(waypoints_data['spawn_x'])
+    default_spawn_y = str(waypoints_data['spawn_y'])
 
     use_sim_time = LaunchConfiguration('use_sim_time')
     x_pose = LaunchConfiguration('x_pose')
@@ -28,12 +54,12 @@ def generate_launch_description():
         description='Use simulation clock if true')
 
     declare_x_pose_cmd = DeclareLaunchArgument(
-        'x_pose', default_value='-1.0',
-        description='Robot spawn x position (west headland)')
+        'x_pose', default_value=default_spawn_x,
+        description='Robot spawn x position (from waypoints.yaml spawn_x)')
 
     declare_y_pose_cmd = DeclareLaunchArgument(
-        'y_pose', default_value='0.5',
-        description='Robot spawn y position (row 1 corridor center)')
+        'y_pose', default_value=default_spawn_y,
+        description='Robot spawn y position (from waypoints.yaml spawn_y)')
 
     # --- Gazebo server ---
     gzserver_cmd = IncludeLaunchDescription(
@@ -51,7 +77,7 @@ def generate_launch_description():
         launch_arguments={'gz_args': '-g -v2 '}.items()
     )
 
-    # --- Robot state publisher ---
+    # --- Robot state publisher (reused directly from turtlebot3_gazebo) ---
     robot_state_publisher_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_tb3_gazebo, 'launch', 'robot_state_publisher.launch.py')
@@ -59,7 +85,7 @@ def generate_launch_description():
         launch_arguments={'use_sim_time': use_sim_time}.items()
     )
 
-    # --- Spawn + ros_gz_bridge ---
+    # --- Spawn + ros_gz_bridge (reused directly from turtlebot3_gazebo) ---
     spawn_turtlebot_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_tb3_gazebo, 'launch', 'spawn_turtlebot3.launch.py')
@@ -67,11 +93,13 @@ def generate_launch_description():
         launch_arguments={'x_pose': x_pose, 'y_pose': y_pose}.items()
     )
 
+    # TurtleBot3 model meshes live under turtlebot3_gazebo/models -- required
+    # for spawn to find geometry, same as the stock empty_world.launch.py does.
     set_env_vars_resources = AppendEnvironmentVariable(
         'GZ_SIM_RESOURCE_PATH',
         os.path.join(pkg_tb3_gazebo, 'models'))
 
-    # --- Nav2 ---
+    # --- Nav2, using our static map + our (to-be-tuned) params ---
     nav2_bringup_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_nav2_bringup, 'launch', 'bringup_launch.py')
@@ -83,6 +111,8 @@ def generate_launch_description():
         }.items()
     )
 
+    # bringup_launch.py deliberately does NOT start RViz -- Nav2 treats it as
+    # a separate concern, launched via this file.
     rviz_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_nav2_bringup, 'launch', 'rviz_launch.py')
