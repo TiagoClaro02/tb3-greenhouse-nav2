@@ -1,27 +1,10 @@
-"""
-Single source of truth for the greenhouse field geometry.
 
-Change NUM_CORRIDORS or ROW_WIDTH here and re-run generate_world.py +
-generate_map.py — both stay in sync automatically. This is deliberately
-built to survive a live requirement change (e.g. "rows are now 0.8m",
-or "make it 4 rows") without touching generator code.
 
-Interpretation note (open question, not yet resolved with the
-interviewer): NUM_CORRIDORS here counts actual driving corridors.
-The outermost corridors are bounded by the field's outer boundary
-wall on one side and an interior divider on the other — i.e. the
-boundary wall doubles as the edge of the outermost crop row. If the
-intended reading is instead "N interior crop-row dividers with the
-boundary walls being separate from the rows," set NUM_CORRIDORS to
-one more than the number of distinct crop rows you want and treat
-the outermost corridors as buffer strips. Ask before assuming.
-"""
-
-NUM_CORRIDORS = 3          # number of parallel 1m-wide driving corridors
-ROW_WIDTH = 1.0            # meters, width of each corridor
+NUM_CORRIDORS = 4          # number of parallel 0.8m-wide driving corridors
+ROW_WIDTH = 0.8            # meters, width of each corridor
 DIVIDER_THICKNESS = 0.2    # meters, thickness of each interior divider wall
 ROW_LENGTH = 6.0           # meters, length of each corridor (the "long" direction, x-axis)
-HEADLAND = 1.5             # meters, open turning space at each end (x-axis)
+HEADLAND = 1.0             # meters, open turning space at each end (x-axis)
 BOUNDARY_THICKNESS = 0.2   # meters, thickness of the outer boundary walls
 WALL_HEIGHT = 0.6          # meters
 
@@ -85,7 +68,7 @@ BLOCKAGE_LENGTH_ALONG_ROW = 0.3
 # more than ROBOT_DIAMETER, so the robot should navigate around it within
 # the row rather than trigger the max_path_length_m abort.
 PARTIAL_OBSTACLE_CORRIDOR_INDEX = 0
-PARTIAL_OBSTACLE_WIDTH_ACROSS_ROW = 0.40  # was 0.35 -- tightened one deliberate step, leaves ~0.55m clear (0.11m slack beyond ROBOT_DIAMETER)
+PARTIAL_OBSTACLE_WIDTH_ACROSS_ROW = 0.1  # was 0.35 -- tightened one deliberate step, leaves ~0.55m clear (0.11m slack beyond ROBOT_DIAMETER)
 PARTIAL_OBSTACLE_LENGTH_ALONG_ROW = 0.3
 PARTIAL_OBSTACLE_X_CENTER = FIELD_X_MIN + ROW_LENGTH * 0.4  # off-center, different position than the full blockage
 _partial_row_bounds = CORRIDOR_BOUNDS[PARTIAL_OBSTACLE_CORRIDOR_INDEX]

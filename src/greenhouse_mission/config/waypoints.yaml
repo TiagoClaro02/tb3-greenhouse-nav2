@@ -1,16 +1,20 @@
-max_path_length_m: 7.083
-spawn_x: -0.75
-spawn_y: 0.5
+max_path_length_m: 6.853
+spawn_x: -0.5
+spawn_y: 0.4
 rows:
 - id: 1
-  y: 0.5
+  y: 0.4
   west_x: 0.3
   east_x: 5.7
 - id: 2
-  y: 1.7
+  y: 1.4
   west_x: 0.3
   east_x: 5.7
 - id: 3
-  y: 2.9
+  y: 2.4
+  west_x: 0.3
+  east_x: 5.7
+- id: 4
+  y: 3.4
   west_x: 0.3
   east_x: 5.7

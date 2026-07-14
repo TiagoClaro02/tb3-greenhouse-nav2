@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""
-Generates worlds/greenhouse.sdf from geometry_config.py.
 
-Run this after changing NUM_CORRIDORS, ROW_WIDTH, or any other value in
-geometry_config.py. Also re-run generate_map.py afterward - the two must
-stay in sync, and both read the same config so they always will.
-"""
 import os
 import geometry_config as g
 

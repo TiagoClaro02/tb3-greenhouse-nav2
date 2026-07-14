@@ -1,27 +1,5 @@
 #!/usr/bin/env python3
-"""
-Diagnostic tool (not part of the mission node) -- records the robot's
-localized trajectory (/amcl_pose) and plots it over the live occupancy
-grid (/map), saving a timestamped PNG each time you stop it with Ctrl+C.
 
-Run this in its own terminal alongside a mission run:
-
-    python3 scripts/plot_trajectory.py
-
-Drive the robot (manually or via mission_node), then Ctrl+C this script
-when done -- it saves e.g. trajectory_20260713_193000.png in the current
-directory. Compare plots across tuning attempts to see whether
-oscillation/clipping is actually improving, rather than eyeballing it live
-in RViz.
-
-Uses /amcl_pose rather than raw odom, since that's the corrected pose
-Nav2 itself is reasoning about -- if AMCL's own correction is a source of
-jitter (see the earlier /amcl_pose vs /cmd_vel diagnostic), that jitter
-will show up here too, which is itself useful information.
-
-Requires matplotlib (not otherwise a dependency of this package):
-    pip install matplotlib --break-system-packages
-"""
 import sys
 from datetime import datetime
 

@@ -1,18 +1,5 @@
 #!/usr/bin/env python3
-"""
-Generates config/waypoints.yaml from geometry_config.py.
 
-Unlike earlier versions of this file, direction is NOT baked in here.
-Each row is stored as its west-side and east-side pose only; mission_node.py
-decides at runtime which side to enter from, based on which side the robot
-actually ended up on after the previous row (a row that completes normally
-puts the robot on the opposite side; a row aborted due to a blockage
-leaves the robot on the same side it entered from). This lets the mission
-node dynamically re-route: if a row is skipped, the next row is entered
-from wherever the robot currently is, instead of blindly continuing a
-fixed alternating pattern that would force an unnecessary crossing to the
-"expected" side.
-"""
 import os
 import yaml
 import geometry_config as g

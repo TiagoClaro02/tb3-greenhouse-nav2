@@ -1,24 +1,5 @@
 #!/usr/bin/env python3
-"""
-Brings up the whole greenhouse mission stack in one launch file:
-  - Gazebo Harmonic server + client, loading worlds/greenhouse.sdf
-  - TurtleBot3 (waffle) spawned via turtlebot3_gazebo's real spawn/bridge launch files
-  - robot_state_publisher
-  - Nav2 bringup, using our static map + nav2_params.yaml
 
-Requires TURTLEBOT3_MODEL to be set in the environment (waffle recommended --
-waffle has the sensor suite this task needs; burger does not get a camera bridge).
-
-Spawn pose is read from config/waypoints.yaml's spawn_x/spawn_y (generated
-by scripts/generate_waypoints.py from geometry_config.py) rather than
-hardcoded here. This was a real bug: a literal x_pose=-1.0 broke the
-moment HEADLAND was changed, since the west boundary wall moved but the
-spawn point didn't -- the robot spawned outside the world. Reading it
-from the same generated file the mission node already uses keeps spawn
-position, AMCL's expectations, and the actual world geometry in sync
-automatically whenever geometry_config.py changes and the generators are
-re-run.
-"""
 import os
 
 import yaml
