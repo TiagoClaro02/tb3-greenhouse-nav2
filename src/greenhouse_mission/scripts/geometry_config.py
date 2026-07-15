@@ -68,7 +68,7 @@ BLOCKAGE_LENGTH_ALONG_ROW = 0.3
 # more than ROBOT_DIAMETER, so the robot should navigate around it within
 # the row rather than trigger the max_path_length_m abort.
 PARTIAL_OBSTACLE_CORRIDOR_INDEX = 0
-PARTIAL_OBSTACLE_WIDTH_ACROSS_ROW = 0.0 
+PARTIAL_OBSTACLE_WIDTH_ACROSS_ROW = 0.35 
 PARTIAL_OBSTACLE_LENGTH_ALONG_ROW = 0.35
 PARTIAL_OBSTACLE_X_CENTER = FIELD_X_MIN + ROW_LENGTH * 0.4  # off-center, different position than the full blockage
 _partial_row_bounds = CORRIDOR_BOUNDS[PARTIAL_OBSTACLE_CORRIDOR_INDEX]
