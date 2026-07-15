@@ -54,18 +54,18 @@ def build_world():
     </model>
 """)
 
-#     models.append(f"""
-#     <model name="partial_obstacle">
-#       <static>true</static>
-#       <pose>{g.PARTIAL_OBSTACLE_X_CENTER} {g.PARTIAL_OBSTACLE_Y_CENTER} 0.2 0 0 0</pose>
-#       <link name="link">
-#         <collision name="collision"><geometry><box><size>{g.PARTIAL_OBSTACLE_LENGTH_ALONG_ROW} {g.PARTIAL_OBSTACLE_WIDTH_ACROSS_ROW} 0.4</size></box></geometry></collision>
-#         <visual name="visual"><geometry><box><size>{g.PARTIAL_OBSTACLE_LENGTH_ALONG_ROW} {g.PARTIAL_OBSTACLE_WIDTH_ACROSS_ROW} 0.4</size></box></geometry>
-#           <material><ambient>0.85 0.55 0.1 1</ambient><diffuse>0.95 0.65 0.15 1</diffuse></material>
-#         </visual>
-#       </link>
-#     </model>
-# """)
+    models.append(f"""
+    <model name="partial_obstacle">
+      <static>true</static>
+      <pose>{g.PARTIAL_OBSTACLE_X_CENTER} {g.PARTIAL_OBSTACLE_Y_CENTER} 0.2 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><box><size>{g.PARTIAL_OBSTACLE_LENGTH_ALONG_ROW} {g.PARTIAL_OBSTACLE_WIDTH_ACROSS_ROW} 0.4</size></box></geometry></collision>
+        <visual name="visual"><geometry><box><size>{g.PARTIAL_OBSTACLE_LENGTH_ALONG_ROW} {g.PARTIAL_OBSTACLE_WIDTH_ACROSS_ROW} 0.4</size></box></geometry>
+          <material><ambient>0.85 0.55 0.1 1</ambient><diffuse>0.95 0.65 0.15 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+""")
 
     ground_size_x = total_x_span + 6
     ground_size_y = g.FIELD_Y_SPAN + 6

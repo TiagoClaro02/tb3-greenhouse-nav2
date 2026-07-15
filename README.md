@@ -142,8 +142,30 @@ rows) but breaks for `ROW_WIDTH ≳ 4.0` at this project's `ROW_LENGTH`/
 formula would need real path-planning geometry, not a triangle-inequality
 approximation, and this project's rows are narrow by definition.
 
+## 8. Demo
+ 
+Each clip is paired with the corresponding trajectory + velocity plot from
+`plot_trajectory.py`, so the reported behavior can be checked against the
+actual recorded path/velocity, not just the video.
+ 
+### Normal row traversal
 
-## 8. Known Limitations
+https://github.com/user-attachments/assets/to_replace_1
+ 
+![Normal traversal trajectory](docs/greenhouse_1m.png)
+ 
+### Narrow Rows (0.8m)
+https://github.com/user-attachments/assets/to_replace_2
+ 
+![Obstacle-skip trajectory](docs/greenhouse_0_8.png)
+ 
+### Partial Obstructed Row
+https://github.com/user-attachments/assets/to_replace_3
+ 
+![Reordering trajectory](docs/greenhouse_partial.png)
+
+
+## 9. Known Limitations
 
 - **AMCL drift in long, feature-sparse corridors.** A well-known limitation
   of particle-filter localization: along-corridor position is weakly
@@ -155,11 +177,8 @@ approximation, and this project's rows are narrow by definition.
   `initial_pose` in `nav2_params.yaml` must match `waypoints.yaml`'s
   `spawn_x`/`spawn_y` by hand after a geometry change (the launch file's
   spawn pose reads this automatically; `nav2_params.yaml` does not).
-- **`smoother_server` is unused** — the default Nav2 behavior
-  tree never invokes it. A custom BT wiring it in would output smoother 
-  paths with less oscilations.
-- Controller smoothness has room for further tuning. Linear and angular
+- **Controller smoothness has room for further tuning.** Linear and angular
   velocity still show some residual oscillation that a longer tuning pass
   would likely improve further. Wiring the existing but currently-unused
-  smoother_server into the behavior tree is the most likely next step,
+  `smoother_server` into the behavior tree is the most likely next step,
   but wasn't pursued to completion in this time-box.
