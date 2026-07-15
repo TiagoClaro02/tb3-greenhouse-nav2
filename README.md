@@ -150,17 +150,17 @@ actual recorded path/velocity, not just the video.
  
 ### Normal row traversal
 
-https://github.com/user-attachments/assets/to_replace_1
+[greenhouse_1m_.webm](https://github.com/user-attachments/assets/2048fcee-7007-4cab-9eb3-a468bee453ad)
  
 ![Normal traversal trajectory](docs/greenhouse_1m.png)
  
 ### Narrow Rows (0.8m)
-https://github.com/user-attachments/assets/to_replace_2
+[greenhouse_narrow.webm](https://github.com/user-attachments/assets/c59c8e34-d197-4fa4-9205-72ec81223aab)
  
 ![Obstacle-skip trajectory](docs/greenhouse_0_8.png)
  
 ### Partial Obstructed Row
-https://github.com/user-attachments/assets/to_replace_3
+[greenhouse_partial_.webm](https://github.com/user-attachments/assets/5b95210c-be21-4f57-9a11-eb625a3eb2c6)
  
 ![Reordering trajectory](docs/greenhouse_partial.png)
 
