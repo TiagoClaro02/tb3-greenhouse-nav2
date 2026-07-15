@@ -1,3 +1,4 @@
+
 import math
 import os
 import time
@@ -16,7 +17,7 @@ from greenhouse_mission.mission_logic import compute_leg, next_side, path_length
 def make_pose(navigator, x, y, yaw):
     pose = PoseStamped()
     pose.header.frame_id = 'map'
-    pose.header.stamp = navigator.get_clock().now().to_msg()
+    pose.header.stamp = rclpy.time.Time().to_msg()
     pose.pose.position.x = float(x)
     pose.pose.position.y = float(y)
     pose.pose.orientation.z = math.sin(yaw / 2.0)
@@ -29,7 +30,7 @@ def load_mission_data(navigator):
     waypoints_path = os.path.join(pkg_share, 'config', 'waypoints.yaml')
     with open(waypoints_path) as f:
         data = yaml.safe_load(f)
-    return data['rows'], data['max_path_length_m']
+    return data['rows'], data['max_path_length_m'], data['spawn_x'], data['spawn_y']
  
  
 class PlanMonitor:
@@ -71,8 +72,6 @@ def drive_to(navigator, status_pub, row_id, total_rows, label, pose,
         time.sleep(0.1)
  
     if aborted_for_blockage:
-        # Drain the actual cancellation result so Nav2's action state is clean
-        # before we move on to the next row.
         while not navigator.isTaskComplete():
             time.sleep(0.05)
         return TaskResult.FAILED
@@ -89,14 +88,14 @@ def run_row(navigator, status_pub, row, total_rows, max_path_length_m, monitor, 
  
     navigator.get_logger().info(f"Row {row_id}/{total_rows}: entering from {leg['entry_side']}")
  
-    result = drive_to(navigator, status_pub, row_id, total_rows, 'entry', entry_pose)
+    result = drive_to(
+        navigator, status_pub, row_id, total_rows, 'entry', entry_pose,
+        monitor=monitor, max_path_length_m=max_path_length_m,
+    )
     if result != TaskResult.SUCCEEDED:
         navigator.get_logger().warn(f'Row {row_id}/{total_rows}: could not reach entry ({result.name})')
         return result, next_side(leg['entry_side'], leg['exit_side'], succeeded=False)
  
-    # The exit leg is where the row is actually traversed -- monitor every
-    # replan for the whole duration, since the obstacle is only discovered
-    # once the robot is close enough to sense it, not before departure.
     result = drive_to(
         navigator, status_pub, row_id, total_rows, 'exit', exit_pose,
         monitor=monitor, max_path_length_m=max_path_length_m,
@@ -118,11 +117,15 @@ def main():
     status_pub = navigator.create_publisher(String, 'mission_status', 10)
     monitor = PlanMonitor(navigator)
  
+    rows, max_path_length_m, spawn_x, spawn_y = load_mission_data(navigator)
+    total_rows = len(rows)
+ 
+    initial_pose = make_pose(navigator, spawn_x, spawn_y, 0.0)
+    navigator.setInitialPose(initial_pose)
+ 
     navigator.get_logger().info('Waiting for Nav2 to become active...')
     navigator.waitUntilNav2Active()
  
-    rows, max_path_length_m = load_mission_data(navigator)
-    total_rows = len(rows)
     navigator.get_logger().info(f'Max allowed path length per row: {max_path_length_m:.2f}m')
     completed, skipped = [], []
  
