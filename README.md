@@ -18,7 +18,7 @@ cd ~/turtlebot3_ws && rosdep install --from-paths src --ignore-src -r -y
 colcon build --symlink-install
 
 # Clone and compile Repo
-git clone <this-repo-url> ~/greenhouse_mission
+git clone https://github.com/TiagoClaro02/tb3-greenhouse-nav2.git ~/greenhouse_mission
 cd ~/greenhouse_mission
 colcon build --symlink-install
 
